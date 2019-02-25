@@ -2,6 +2,7 @@ package com.zom.media.netty.pro.base;
 
 
 import com.zom.media.util.FastJsonutil;
+import com.zom.media.util.GsonUtil;
 
 /**
  * Created by USERA on 2019/2/14.
@@ -26,9 +27,14 @@ public class BasePro {
      * @return
      */
     public String toJson(){
-        return FastJsonutil.convertObjectToJSON(this);
+        return GsonUtil.GsonString(this);
     }
 
+    public void setName(Integer name) {
+        this.name = name;
+    }
 
-
+    public void setData(Object data) {
+        this.data = data;
+    }
 }

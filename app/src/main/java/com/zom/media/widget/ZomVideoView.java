@@ -4,6 +4,7 @@ import android.content.Context;
 import android.media.MediaPlayer;
 import android.os.Environment;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.widget.VideoView;
 
 import java.io.File;
@@ -13,8 +14,9 @@ import java.util.List;
  * Created by USERA on 2019/2/22.
  */
 
-public class ZomVideoView extends VideoView{
+public class ZomVideoView extends VideoView implements BaseView{
 
+    private String TAG = "ZomVideoView";
     private String localPath;
     private List<String> fileList;
     private int index = 0;
@@ -29,7 +31,7 @@ public class ZomVideoView extends VideoView{
 
     public ZomVideoView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        localPath = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator;
+        localPath = Environment.getExternalStorageDirectory().getAbsolutePath();
         setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mediaPlayer) {
@@ -43,12 +45,13 @@ public class ZomVideoView extends VideoView{
     }
 
     public void play(){
+        Log.e(TAG,"播放视频：" + index);
         String file = localPath + fileList.get(index);
         setVideoPath(file);
         start();
     }
 
-    private void next(){
+    public void next(){
         index++;
         if(index > (fileList.size() - 1)){
             index = 0;

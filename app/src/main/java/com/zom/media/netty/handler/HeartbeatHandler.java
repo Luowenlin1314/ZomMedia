@@ -29,8 +29,9 @@ public class HeartbeatHandler  extends ChannelHandlerAdapter {
             IdleStateEvent event = (IdleStateEvent) evt;
             if (event.state() == IdleState.READER_IDLE) {
                 Log.e(TAG, ctx.channel().remoteAddress() + " 读超时");
-                ctx.close();
             } else if (event.state() == IdleState.WRITER_IDLE) {
+                Log.e(TAG, ctx.channel().remoteAddress() + " 写超时");
+                ctx.close();
             } else if (event.state() == IdleState.ALL_IDLE) {
             }
 //            ctx.writeAndFlush(HEARTBEAT_SEQUENCE.duplicate()).addListener(

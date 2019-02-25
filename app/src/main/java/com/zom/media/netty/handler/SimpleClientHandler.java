@@ -1,8 +1,18 @@
 package com.zom.media.netty.handler;
 
+import android.content.Intent;
+import android.os.Build;
 import android.util.Log;
 
+import com.zom.media.base.MyAppLication;
+import com.zom.media.netty.pro.base.BasePro;
+import com.zom.media.netty.pro.constant.ProtocolCons;
+import com.zom.media.netty.pro.entity.Identity;
+import com.zom.media.util.Config;
+
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
+import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.util.CharsetUtil;
@@ -28,6 +38,8 @@ public class SimpleClientHandler extends ChannelHandlerAdapter {
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         super.channelActive(ctx);
         Log.d(TAG, "建立连接：" + ctx.channel());
+        //发送协议
+//        sendIdentityPro(ctx);
     }
 
     /**
@@ -63,6 +75,33 @@ public class SimpleClientHandler extends ChannelHandlerAdapter {
         super.exceptionCaught(ctx, cause);
         Log.e(TAG, "exceptionCaught：" + cause.getMessage());
         ctx.close();
+        sendToNettyService();
     }
 
+    /**
+     * 错误处理
+     */
+    private void sendToNettyService(){
+        Intent intent = new Intent(Config.ACTION_NETTY_LOST);
+        MyAppLication.getContext().sendBroadcast(intent);
+    }
+
+    /**
+     * 身份验证协议
+     * @param ctx
+     */
+    private void sendIdentityPro(ChannelHandlerContext ctx){
+        BasePro basePro = new BasePro();
+        basePro.setName(ProtocolCons.TERMINAL_IDENTITY);
+        Identity identity = new Identity();
+        identity.setVersion(Build.VERSION.RELEASE);
+        identity.setNetIP("test");
+        identity.setNetMac("test");
+        identity.setNetType(1);
+        identity.setResolution("test");
+        identity.setDeviceCode(MyAppLication.getUuid());
+        basePro.setData(identity);
+        ByteBuf msg = Unpooled.unreleasableBuffer(Unpooled.copiedBuffer(basePro.toJson(), CharsetUtil.UTF_8));
+        ctx.writeAndFlush(msg.duplicate()).addListener(ChannelFutureListener.CLOSE_ON_FAILURE);
+    }
 }

@@ -14,6 +14,8 @@ public interface ProtocolCons {
     //终端身份失败
     Integer TERMINAL_IDENTITY_SUCCESS = 10011;
 
-    /********节目相关************/
+    /********主题相关************/
+    //更新主题
+    Integer PROGRAM_UPDATE = 2001;
 
 }

@@ -29,5 +29,38 @@ public class ContainerView extends PercentRelativeLayout {
         rootView = (PercentRelativeLayout) view.findViewById(R.id.root);
     }
 
+    public void addView(View view){
+        rootView.addView(view);
+    }
+
+    public void play(){
+        int childCount = rootView.getChildCount();
+        if(childCount > 0){
+            for (int i = 0; i < childCount; i++) {
+                BaseView childView = (BaseView) rootView.getChildAt(i);
+                childView.play();
+            }
+        }
+    }
+
+    public void stop(){
+        int childCount = rootView.getChildCount();
+        if(childCount > 0){
+            for (int i = 0; i < childCount; i++) {
+                BaseView childView = (BaseView) rootView.getChildAt(i);
+                childView.stop();
+            }
+        }
+    }
+
+    public void next(){
+        int childCount = rootView.getChildCount();
+        if(childCount > 0){
+            for (int i = 0; i < childCount; i++) {
+                BaseView childView = (BaseView) rootView.getChildAt(i);
+                childView.next();
+            }
+        }
+    }
 
 }

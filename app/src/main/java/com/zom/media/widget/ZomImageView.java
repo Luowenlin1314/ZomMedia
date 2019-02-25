@@ -6,9 +6,11 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.zom.media.R;
 import com.zom.media.util.Config;
 
 import java.io.File;
@@ -18,8 +20,9 @@ import java.util.List;
  * Created by USERA on 2019/2/22.
  */
 
-public class ZomImageView extends ImageView{
+public class ZomImageView extends ImageView implements BaseView{
 
+    private String TAG = "ZomImageView";
     private String localPath;
     private List<String> fileList;
     private List<Long> durations;
@@ -47,7 +50,7 @@ public class ZomImageView extends ImageView{
 
     public ZomImageView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        localPath = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator;
+        localPath = Environment.getExternalStorageDirectory().getAbsolutePath();
     }
 
     /**
@@ -70,8 +73,10 @@ public class ZomImageView extends ImageView{
      * 开始
      */
     public void play(){
+        Log.e(TAG,"播放图片：" + index);
+        showing = true;
         String filePath = localPath + fileList.get(index);
-        Glide.with(getContext()).load(filePath).into(this);
+        Glide.with(getContext()).load(new File(filePath)).into(this);
         handler.sendEmptyMessageDelayed(Config.RPOGRAM_NEXT, durations.get(index));
     }
 
@@ -79,11 +84,17 @@ public class ZomImageView extends ImageView{
      * next
      */
     public void next(){
-        index++;
-        if(index > (fileList.size() - 1)){
-            index = 0;
+        if(showing){
+            index++;
+            if(index > (fileList.size() - 1)){
+                index = 0;
+            }
+            play();
         }
-        play();
+    }
+
+    public void stop(){
+        showing = false;
     }
 
 }
