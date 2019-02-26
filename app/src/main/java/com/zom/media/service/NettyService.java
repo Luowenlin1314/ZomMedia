@@ -48,7 +48,13 @@ public class NettyService extends Service {
         unregistActionReceiver();
     }
 
+    private long lastConnectTime = 0;
     private void nettyStart(){
+        long currentTimeMillis = System.currentTimeMillis();
+        if(currentTimeMillis - lastConnectTime < 5000){
+            lastConnectTime = System.currentTimeMillis();
+            return;
+        }
         if(isNetworkActive()){
             nettyClient.connect();
         }
@@ -83,10 +89,10 @@ public class NettyService extends Service {
             if (info != null) {
                 if (info.isConnected() && info.isAvailable()) {
                     Log.i(TAG, "网络连上");
-                    nettyClient.connect();
+//                    nettyStart();
                 } else {
                     Log.i(TAG, "网络断开");
-                    nettyClient.close();
+//                    nettyClient.close();
                 }
             }
         }

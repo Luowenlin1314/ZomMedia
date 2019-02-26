@@ -1,5 +1,7 @@
 package com.zom.media.netty.handler.ibs;
 
+import android.util.Log;
+
 import com.zom.media.queue.DownLoadQueue;
 import com.zom.media.sql.entity.vo.ProgramVO;
 import com.zom.media.sql.service.ProgramService;
@@ -17,7 +19,9 @@ public class ProgramHandler extends BaseIbsHandler{
 
     @Override
     public void handler(Object data) {
-        ProgramVO programVO = (ProgramVO) GsonUtil.jsonToList(GsonUtil.GsonString(data),ProgramVO.class);
+        String json = GsonUtil.GsonString(data);
+        Log.e("ProgramHandler","json");
+        ProgramVO programVO = GsonUtil.GsonToBean(json,ProgramVO.class);
         programService.addProgram(programVO);
 
 //        downLoadQueue.addQueue(programVO);

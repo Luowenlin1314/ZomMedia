@@ -50,7 +50,7 @@ public class ZomImageView extends ImageView implements BaseView{
 
     public ZomImageView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        localPath = Environment.getExternalStorageDirectory().getAbsolutePath();
+        localPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/zomMedia/";
     }
 
     /**
@@ -73,10 +73,11 @@ public class ZomImageView extends ImageView implements BaseView{
      * 开始
      */
     public void play(){
-        Log.e(TAG,"播放图片：" + index);
+        handler.removeMessages(Config.RPOGRAM_NEXT);
+        Log.e(TAG,"播放图片：" + fileList.get(index));
         showing = true;
         String filePath = localPath + fileList.get(index);
-        Glide.with(getContext()).load(new File(filePath)).into(this);
+        Glide.with(getContext()).load(new File(filePath)).error(R.mipmap.img_error).into(this);
         handler.sendEmptyMessageDelayed(Config.RPOGRAM_NEXT, durations.get(index));
     }
 
@@ -95,6 +96,7 @@ public class ZomImageView extends ImageView implements BaseView{
 
     public void stop(){
         showing = false;
+        handler.removeMessages(Config.RPOGRAM_NEXT);
     }
 
 }

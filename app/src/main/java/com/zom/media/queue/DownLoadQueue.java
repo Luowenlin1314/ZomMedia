@@ -4,6 +4,7 @@ import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.zom.media.base.MyAppLication;
 import com.zom.media.entity.FtpResult;
 import com.zom.media.sql.entity.Material;
 import com.zom.media.sql.entity.vo.ElementVO;
@@ -11,6 +12,7 @@ import com.zom.media.sql.entity.vo.ProgramVO;
 import com.zom.media.util.Config;
 import com.zom.media.util.FTPUtil;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +37,7 @@ public class DownLoadQueue implements Runnable {
     }
 
     private DownLoadQueue() {
-        ftpUtil = new FTPUtil(Config.FTP_HOST, Config.FTP_PORT, Config.FTP_PWD);
+        ftpUtil = new FTPUtil(Config.FTP_HOST, Config.FTP_PUSER, Config.FTP_PWD);
         exec = Executors.newFixedThreadPool(1);
         exec.execute(this);
     }
@@ -72,7 +74,9 @@ public class DownLoadQueue implements Runnable {
         }
     }
 
-    private void downLoad(ProgramVO programVO) {
+    private void downLoad(ProgramVO programVO) throws Exception{
+        ftpUtil.openConnect();
+
         Long programId = programVO.getProgramId();
         ArrayList<Material> materials = new ArrayList<>();
         List<ElementVO> elementVOList = programVO.getElementList();
@@ -81,7 +85,11 @@ public class DownLoadQueue implements Runnable {
         }
 
         for (Material material : materials) {
-            String localPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/media/" + programId;
+            String localPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/zomMedia";
+            File file = new File(localPath);
+            if(!file.exists()){
+                file.mkdirs();
+            }
             try {
                 FtpResult ftpResult = ftpUtil.download(material.getRelativePath(), material.getMaterialName(), localPath);
                 if (ftpResult.isFlag()) {
@@ -93,5 +101,9 @@ public class DownLoadQueue implements Runnable {
                 e.printStackTrace();
             }
         }
+
+        ftpUtil.closeConnect();
+
+        MyAppLication.sendReceiver(Config.ACTION_PROGRAM_UPDATE);
     }
 }

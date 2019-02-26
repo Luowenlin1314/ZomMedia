@@ -3,34 +3,33 @@ package com.zom.media.sql.entity;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
-public class Element extends RealmObject{
+public class Element {
 
-    @PrimaryKey
     private Long elementId;
 
     private Long programId;
 
     private String elementName;
 
-    private Integer type;
+    private Integer etype;
 
     private String background;
 
-    private Integer left;
+    private Integer eleft;
 
-    private Integer top;
+    private Integer etop;
 
-    private Integer width;
+    private Integer ewidth;
 
-    private Integer height;
+    private Integer eheight;
 
-    private Integer index;
+    private Integer eindex;
 
     private Integer duration;
 
     private Integer effect;
 
-    private Integer mode;
+    private Integer emode;
 
     private String remark;
 
@@ -55,15 +54,15 @@ public class Element extends RealmObject{
     }
 
     public void setElementName(String elementName) {
-        this.elementName = elementName == null ? null : elementName.trim();
+        this.elementName = elementName;
     }
 
-    public Integer getType() {
-        return type;
+    public Integer getEtype() {
+        return etype;
     }
 
-    public void setType(Integer type) {
-        this.type = type;
+    public void setEtype(Integer etype) {
+        this.etype = etype;
     }
 
     public String getBackground() {
@@ -71,47 +70,47 @@ public class Element extends RealmObject{
     }
 
     public void setBackground(String background) {
-        this.background = background == null ? null : background.trim();
+        this.background = background;
     }
 
-    public Integer getLeft() {
-        return left;
+    public Integer getEleft() {
+        return eleft;
     }
 
-    public void setLeft(Integer left) {
-        this.left = left;
+    public void setEleft(Integer eleft) {
+        this.eleft = eleft;
     }
 
-    public Integer getTop() {
-        return top;
+    public Integer getEtop() {
+        return etop;
     }
 
-    public void setTop(Integer top) {
-        this.top = top;
+    public void setEtop(Integer etop) {
+        this.etop = etop;
     }
 
-    public Integer getWidth() {
-        return width;
+    public Integer getEwidth() {
+        return ewidth;
     }
 
-    public void setWidth(Integer width) {
-        this.width = width;
+    public void setEwidth(Integer ewidth) {
+        this.ewidth = ewidth;
     }
 
-    public Integer getHeight() {
-        return height;
+    public Integer getEheight() {
+        return eheight;
     }
 
-    public void setHeight(Integer height) {
-        this.height = height;
+    public void setEheight(Integer eheight) {
+        this.eheight = eheight;
     }
 
-    public Integer getIndex() {
-        return index;
+    public Integer getEindex() {
+        return eindex;
     }
 
-    public void setIndex(Integer index) {
-        this.index = index;
+    public void setEindex(Integer eindex) {
+        this.eindex = eindex;
     }
 
     public Integer getDuration() {
@@ -130,12 +129,12 @@ public class Element extends RealmObject{
         this.effect = effect;
     }
 
-    public Integer getMode() {
-        return mode;
+    public Integer getEmode() {
+        return emode;
     }
 
-    public void setMode(Integer mode) {
-        this.mode = mode;
+    public void setEmode(Integer emode) {
+        this.emode = emode;
     }
 
     public String getRemark() {
@@ -143,6 +142,6 @@ public class Element extends RealmObject{
     }
 
     public void setRemark(String remark) {
-        this.remark = remark == null ? null : remark.trim();
+        this.remark = remark;
     }
 }

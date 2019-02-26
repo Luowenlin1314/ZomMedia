@@ -19,9 +19,9 @@ public class ProgramVO {
 
     private String programName;
 
-    private Integer type;
+    private Integer ptype;
 
-    private Double size;
+    private Double psize;
 
     private Integer duration;
 
@@ -66,20 +66,20 @@ public class ProgramVO {
         this.programName = programName;
     }
 
-    public Integer getType() {
-        return type;
+    public Integer getPtype() {
+        return ptype;
     }
 
-    public void setType(Integer type) {
-        this.type = type;
+    public void setPtype(Integer ptype) {
+        this.ptype = ptype;
     }
 
-    public Double getSize() {
-        return size;
+    public Double getPsize() {
+        return psize;
     }
 
-    public void setSize(Double size) {
-        this.size = size;
+    public void setPsize(Double psize) {
+        this.psize = psize;
     }
 
     public Integer getDuration() {

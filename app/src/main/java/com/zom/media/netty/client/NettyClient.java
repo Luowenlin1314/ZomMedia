@@ -1,5 +1,7 @@
 package com.zom.media.netty.client;
 
+import android.util.Log;
+
 import com.zom.media.netty.handler.HeartbeatHandler;
 import com.zom.media.netty.handler.SimpleClientHandler;
 
@@ -28,17 +30,11 @@ public class NettyClient {
 
     private ChannelFuture channelFuture;
     private EventLoopGroup worker;
-    private long lastTime = 0;
 
     /**
      * 连接
      */
-    public void connect() {
-        long curremtTimeMillis = System.currentTimeMillis();
-        if(curremtTimeMillis - lastTime < 3000){
-            lastTime = System.currentTimeMillis();
-            return;
-        }
+    public synchronized void connect() {
         close();
         worker = new NioEventLoopGroup();
         try {
@@ -50,11 +46,11 @@ public class NettyClient {
                 @Override
                 public void initChannel(SocketChannel ch) throws Exception {
                     ChannelPipeline pipeline = ch.pipeline();
-//                    pipeline.addLast(new IdleStateHandler(0, 10, 0, TimeUnit.SECONDS));
-
-                    pipeline.addLast(new SimpleClientHandler());
+                    pipeline.addLast(new IdleStateHandler(0, 10, 0, TimeUnit.SECONDS));
 
                     pipeline.addLast(new HeartbeatHandler());
+
+                    pipeline.addLast(new SimpleClientHandler());
                 }
             });
             channelFuture = b.connect(HOST, PORT).sync();

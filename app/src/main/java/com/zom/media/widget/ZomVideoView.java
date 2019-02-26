@@ -31,7 +31,7 @@ public class ZomVideoView extends VideoView implements BaseView{
 
     public ZomVideoView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        localPath = Environment.getExternalStorageDirectory().getAbsolutePath();
+        localPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/zomMedia/";
         setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mediaPlayer) {

@@ -9,18 +9,17 @@ import io.realm.annotations.PrimaryKey;
  * Created by USERA on 2019/2/22.
  */
 
-public class Program extends RealmObject {
+public class Program {
 
-    @PrimaryKey
     private Long programId;
 
     private Long corpId;
 
     private String programName;
 
-    private Integer type;
+    private Integer ptype;
 
-    private Double size;
+    private Double psize;
 
     private Integer duration;
 
@@ -54,20 +53,20 @@ public class Program extends RealmObject {
         this.programName = programName;
     }
 
-    public Integer getType() {
-        return type;
+    public Integer getPtype() {
+        return ptype;
     }
 
-    public void setType(Integer type) {
-        this.type = type;
+    public void setPtype(Integer ptype) {
+        this.ptype = ptype;
     }
 
-    public Double getSize() {
-        return size;
+    public Double getPsize() {
+        return psize;
     }
 
-    public void setSize(Double size) {
-        this.size = size;
+    public void setPsize(Double psize) {
+        this.psize = psize;
     }
 
     public Integer getDuration() {

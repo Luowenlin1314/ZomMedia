@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.zom.media.queue.DownLoadQueue;
 import com.zom.media.sql.entity.CacheData;
 import com.zom.media.sql.entity.Element;
 import com.zom.media.sql.entity.Material;
@@ -21,6 +22,7 @@ import java.util.Date;
 import java.util.List;
 
 import io.realm.Realm;
+import io.realm.RealmResults;
 
 /**
  * Created by USERA on 2019/2/22.
@@ -50,8 +52,25 @@ public class ProgramServiceImpl implements ProgramService {
             }
         });
         Log.e(TAG,"添加主题");
+
+        DownLoadQueue.getInstance().addQueue(programvo);
+
         return 1;
     }
+
+    @Override
+    public int deleteAll() {
+        Realm realm = Realm.getDefaultInstance();
+        final RealmResults<CacheData> cacheDataList = realm.where(CacheData.class).equalTo("type", 1).findAll();
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                cacheDataList.deleteAllFromRealm();
+            }
+        });
+        return 0;
+    }
+
 
     @Override
     public ProgramVO getLastProgram() {
@@ -65,7 +84,7 @@ public class ProgramServiceImpl implements ProgramService {
         Collections.sort(resultDatas, new Comparator<CacheData>() {
             @Override
             public int compare(CacheData o1, CacheData o2) {
-                if (o2.getCreateTime().compareTo(o1.getCreateTime()) > 0) {
+                if (o2.getCreateTime().compareTo(o1.getCreateTime()) < 0) {
                     return -1;
                 }
                 return 1;
@@ -78,66 +97,5 @@ public class ProgramServiceImpl implements ProgramService {
         return programvo;
     }
 
-    /**
-     * 保存主题
-     *
-     * @param programvo
-     */
-    private void copyProgram(ProgramVO programvo) {
-        Program program = new Program();
-        program.setProgramId(programvo.getProgramId());
-        program.setProgramName(programvo.getProgramName());
-        program.setCreateTime(programvo.getCreateTime());
-        program.setDuration(programvo.getDuration());
-        program.setSize(programvo.getSize());
-        program.setStatus(programvo.getStatus());
-        program.setType(programvo.getType());
-        program.setRemark(programvo.getRemark());
-        Realm realm = Realm.getDefaultInstance();
-        realm.copyFromRealm(program);
-        realm.close();
-    }
-
-    /**
-     * 保存元素
-     *
-     * @param programVO
-     */
-    private void copyElements(ProgramVO programVO) {
-        List<ElementVO> elementList = programVO.getElementList();
-        for (ElementVO elementVO : elementList) {
-            Element element = new Element();
-            element.setElementId(elementVO.getElementId());
-            element.setProgramId(elementVO.getProgramId());
-            element.setElementName(elementVO.getElementName());
-            element.setLeft(elementVO.getLeft());
-            element.setTop(elementVO.getTop());
-            element.setWidth(elementVO.getWidth());
-            element.setHeight(elementVO.getHeight());
-            element.setDuration(elementVO.getDuration());
-            element.setEffect(elementVO.getEffect());
-            element.setType(elementVO.getType());
-            element.setBackground(elementVO.getBackground());
-            element.setMode(elementVO.getMode());
-            element.setRemark(elementVO.getRemark());
-            Realm realm = Realm.getDefaultInstance();
-            realm.copyFromRealm(element);
-            realm.close();
-        }
-    }
-
-    /**
-     * 保存元素素材
-     *
-     * @param elementVO
-     */
-    private void copyMaterials(ElementVO elementVO) {
-        List<Material> materialList = elementVO.getMaterialList();
-        for (Material material : materialList) {
-            Realm realm = Realm.getDefaultInstance();
-            realm.copyFromRealm(material);
-            realm.close();
-        }
-    }
 
 }

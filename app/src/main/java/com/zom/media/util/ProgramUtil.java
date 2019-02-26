@@ -41,14 +41,14 @@ public class ProgramUtil {
         Collections.sort(elementVOList, new Comparator<ElementVO>() {
             @Override
             public int compare(ElementVO o1, ElementVO o2) {
-                if (o2.getIndex().compareTo(o1.getIndex()) < 0) {
+                if (o2.getEindex().compareTo(o1.getEindex()) < 0) {
                     return -1;
                 }
                 return 1;
             }
         });
         for (ElementVO elementVO : elementVOList) {
-            Integer type = elementVO.getType();
+            Integer type = elementVO.getEtype();
             if(type.equals(ElementType.IMAGE.getType())){
                 ZomImageView zomImageView = buildImageView(context,elementVO);
                 containerView.addView(zomImageView);
@@ -87,17 +87,17 @@ public class ProgramUtil {
         ZomImageView zomImageView = new ZomImageView(context);
         PercentRelativeLayout.LayoutParams params = new PercentRelativeLayout.LayoutParams(0,0);
         PercentLayoutHelper.PercentLayoutInfo percentLayoutInfo = params.getPercentLayoutInfo();
-        percentLayoutInfo.widthPercent = elementVO.getWidth() / 100f;
-        percentLayoutInfo.heightPercent = elementVO.getHeight() / 100f;
-        percentLayoutInfo.leftMarginPercent = elementVO.getLeft() / 100f;
-        percentLayoutInfo.topMarginPercent = elementVO.getTop() / 100f;
+        percentLayoutInfo.widthPercent = elementVO.getEwidth() / 100f;
+        percentLayoutInfo.heightPercent = elementVO.getEheight() / 100f;
+        percentLayoutInfo.leftMarginPercent = elementVO.getEleft() / 100f;
+        percentLayoutInfo.topMarginPercent = elementVO.getEtop() / 100f;
         zomImageView.setScaleType(ImageView.ScaleType.FIT_XY);
         zomImageView.setLayoutParams(params);
 
         ArrayList<String> fileList = new ArrayList<>();
         ArrayList<Long> durations = new ArrayList<>();
         for (Material material : materialList) {
-            fileList.add(material.getRelativePath());
+            fileList.add(material.getMaterialName());
             durations.add(material.getDuration());
         }
         zomImageView.setFileList(fileList);
@@ -116,15 +116,15 @@ public class ProgramUtil {
         YTVideoView zomVideoView = new YTVideoView(context);
         PercentRelativeLayout.LayoutParams params = new PercentRelativeLayout.LayoutParams(0,0);
         PercentLayoutHelper.PercentLayoutInfo percentLayoutInfo = params.getPercentLayoutInfo();
-        percentLayoutInfo.widthPercent = elementVO.getWidth() / 100f;
-        percentLayoutInfo.heightPercent = elementVO.getHeight() / 100f;
-        percentLayoutInfo.leftMarginPercent = elementVO.getLeft() / 100f;
-        percentLayoutInfo.topMarginPercent = elementVO.getTop() / 100f;
+        percentLayoutInfo.widthPercent = elementVO.getEwidth() / 100f;
+        percentLayoutInfo.heightPercent = elementVO.getEheight() / 100f;
+        percentLayoutInfo.leftMarginPercent = elementVO.getEleft() / 100f;
+        percentLayoutInfo.topMarginPercent = elementVO.getEtop() / 100f;
         zomVideoView.setLayoutParams(params);
 
         ArrayList<String> fileList = new ArrayList<>();
         for (Material material : materialList) {
-            fileList.add(material.getRelativePath());
+            fileList.add(material.getMaterialName());
         }
         zomVideoView.setFileList(fileList);
         return zomVideoView;

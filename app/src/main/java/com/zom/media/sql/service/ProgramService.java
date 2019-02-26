@@ -17,6 +17,8 @@ public interface ProgramService {
      */
     int addProgram(ProgramVO programvo);
 
+    int deleteAll();
+
     /**
      * 获取最新主题
      * @return

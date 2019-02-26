@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.zom.media.service.DownLoadService;
 import com.zom.media.service.NettyService;
@@ -21,18 +22,20 @@ import io.realm.RealmConfiguration;
 
 public class MyAppLication extends Application {
 
+    private static MyAppLication myAppLication;
+
     @Override
     public void onCreate() {
         super.onCreate();
-
+        myAppLication = this;
+        PreferenceUtils.init(getContext());
         initRealm();
         nettyService();
-//        downLoadService();
-//        PreferenceUtils.init(getContext());
+        downLoadService();
     }
 
     public static Context getContext(){
-        return getContext();
+        return myAppLication.getApplicationContext();
     }
 
     /**
@@ -63,10 +66,16 @@ public class MyAppLication extends Application {
     public static String getUuid(){
         String localUuid = PreferenceUtils.getString("uuid", "");
         if(TextUtils.isEmpty(localUuid)){
-            localUuid = UUID.randomUUID().toString();
+            localUuid = UUID.randomUUID().toString().replaceAll("-","");
             PreferenceUtils.commitString("uuid",localUuid);
         }
         return localUuid;
     }
 
+
+    public static void sendReceiver(String action){
+        Log.e("sendReceiver","发送广播");
+        Intent intent = new Intent(action);
+        getContext().sendBroadcast(intent);
+    }
 }

@@ -12,6 +12,7 @@ import com.zom.media.util.Config;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
@@ -39,7 +40,7 @@ public class SimpleClientHandler extends ChannelHandlerAdapter {
         super.channelActive(ctx);
         Log.d(TAG, "建立连接：" + ctx.channel());
         //发送协议
-//        sendIdentityPro(ctx);
+        sendIdentityPro(ctx);
     }
 
     /**
@@ -50,8 +51,6 @@ public class SimpleClientHandler extends ChannelHandlerAdapter {
      */
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        super.channelRead(ctx, msg);
-
         try{
             String data = ((ByteBuf) msg).toString(CharsetUtil.UTF_8);
             Log.d(TAG, "收到服务端" + ctx.channel().remoteAddress() + "的消息：" + data);
@@ -59,7 +58,7 @@ public class SimpleClientHandler extends ChannelHandlerAdapter {
             messageDispatchHandler.messageReceive(ctx,data);
 
         }finally {
-            ReferenceCountUtil.release(msg);
+//            ReferenceCountUtil.release(msg);
         }
 
     }
@@ -72,10 +71,9 @@ public class SimpleClientHandler extends ChannelHandlerAdapter {
      */
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        super.exceptionCaught(ctx, cause);
+        super.exceptionCaught(ctx,cause);
         Log.e(TAG, "exceptionCaught：" + cause.getMessage());
-        ctx.close();
-        sendToNettyService();
+//        sendToNettyService();
     }
 
     /**
@@ -98,6 +96,7 @@ public class SimpleClientHandler extends ChannelHandlerAdapter {
         identity.setNetIP("test");
         identity.setNetMac("test");
         identity.setNetType(1);
+        identity.setCorpCode("aaaa");
         identity.setResolution("test");
         identity.setDeviceCode(MyAppLication.getUuid());
         basePro.setData(identity);

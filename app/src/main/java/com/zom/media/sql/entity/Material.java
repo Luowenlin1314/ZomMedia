@@ -5,9 +5,8 @@ import java.util.Date;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
-public class Material extends RealmObject{
+public class Material {
 
-    @PrimaryKey
     private Long materialId;
 
     private Long elementId;
@@ -16,9 +15,9 @@ public class Material extends RealmObject{
 
     private String materialName;
 
-    private Integer type;
+    private Integer mtype;
 
-    private Integer size;
+    private Integer msize;
 
     private Long duration;
 
@@ -58,20 +57,20 @@ public class Material extends RealmObject{
         this.materialName = materialName;
     }
 
-    public Integer getType() {
-        return type;
+    public Integer getMtype() {
+        return mtype;
     }
 
-    public void setType(Integer type) {
-        this.type = type;
+    public void setMtype(Integer mtype) {
+        this.mtype = mtype;
     }
 
-    public Integer getSize() {
-        return size;
+    public Integer getMsize() {
+        return msize;
     }
 
-    public void setSize(Integer size) {
-        this.size = size;
+    public void setMsize(Integer msize) {
+        this.msize = msize;
     }
 
     public Long getDuration() {
